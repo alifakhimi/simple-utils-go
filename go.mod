@@ -1,4 +1,4 @@
-module github.com/alifakhimi/simple-utils
+module github.com/alifakhimi/simple-utils-go
 
 go 1.22.3
 

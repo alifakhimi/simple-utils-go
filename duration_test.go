@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	simutils "github.com/alifakhimi/simple-utils"
+	simutils "github.com/alifakhimi/simple-utils-go"
 )
 
 func TestDuration_MarshalJSON(t *testing.T) {
