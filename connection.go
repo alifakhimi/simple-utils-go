@@ -86,18 +86,6 @@ type DBConfig struct {
 	TranslateError bool `json:"translate_error,omitempty" mapstructure:"translate_error"`
 }
 
-// DatabaseDriver ...
-type DatabaseDriver int
-
-const (
-	// Postgres SQL ...
-	PostgresSQL DatabaseDriver = iota + 1
-	// SQL Server ...
-	SQLServer
-	// SQLite ...
-	SQLite
-)
-
 // LoggerConfig logger config
 type LoggerConfig struct {
 	SlowThreshold             time.Duration `json:"slow_threshold,omitempty" mapstructure:"slow_threshold"`

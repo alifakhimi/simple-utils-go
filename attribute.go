@@ -1,4 +1,4 @@
-package enums
+package simutils
 
 // AttributeType ...
 type AttributeType int

@@ -1,4 +1,4 @@
-package enums
+package simutils
 
 // MilitaryStatus ...
 type MilitaryStatus uint
