@@ -1,4 +1,4 @@
-package cache
+package simutils
 
 import (
 	"context"
@@ -7,8 +7,6 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/labstack/echo/v4"
-
-	"github.com/alifakhimi/simple-utils-go/templates"
 )
 
 // Error block
@@ -26,7 +24,7 @@ type Cache struct {
 	ExpireTime   time.Duration  `json:"expire_time,omitempty" mapstructure:"expire_time"`
 }
 
-func Init(cache *Cache) (err error) {
+func InitCache(cache *Cache) (err error) {
 	c = cache
 
 	if cache == nil || cache.RedisOptions == nil {
@@ -68,7 +66,7 @@ func (c *Cache) Set(ctx context.Context, key string, val interface{}) (err error
 
 func (c *Cache) SetResponse(ctx echo.Context, data, meta interface{}) (err error) {
 	var (
-		response   = new(templates.ResponseTemplate)
+		response   = new(ResponseTemplate)
 		requestKey = ctx.Request().RequestURI
 	)
 

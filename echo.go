@@ -11,8 +11,6 @@ import (
 	"unicode"
 
 	"github.com/labstack/echo/v4"
-
-	"github.com/alifakhimi/simple-utils-go/templates"
 )
 
 func IsDigit(s string) bool {
@@ -46,35 +44,35 @@ func ReplyTemplate(ctx echo.Context, httpStatus int, err error, template interfa
 
 // Reply ...
 func Reply(ctx echo.Context, httpStatus int, err error, content map[string]interface{}, meta interface{}) error {
-	var template *templates.ResponseTemplate
+	var template *ResponseTemplate
 
 	switch httpStatus {
 	case http.StatusOK:
-		template = templates.Ok(content, err, meta)
+		template = Ok(content, err, meta)
 	case http.StatusCreated:
-		template = templates.Created(content, meta)
+		template = Created(content, meta)
 	case http.StatusBadRequest:
-		template = templates.BadRequest(content, err.Error())
+		template = BadRequest(content, err.Error())
 	case http.StatusInternalServerError:
-		template = templates.InternalServerError(content, err.Error())
+		template = InternalServerError(content, err.Error())
 	case http.StatusNotFound:
-		template = templates.NotFound(content, err.Error())
+		template = NotFound(content, err.Error())
 	case http.StatusUnprocessableEntity:
-		template = templates.UnprocessableEntity(content, err.Error())
+		template = UnprocessableEntity(content, err.Error())
 	case http.StatusMethodNotAllowed:
-		template = templates.MethodNotAllowed(content, err.Error())
+		template = MethodNotAllowed(content, err.Error())
 	case http.StatusUnauthorized:
-		template = templates.Unauthorized(content, err.Error())
+		template = Unauthorized(content, err.Error())
 	case http.StatusForbidden:
-		template = templates.Forbidden(content, err.Error())
+		template = Forbidden(content, err.Error())
 	case http.StatusGatewayTimeout:
-		template = templates.GatewayTimeOut(content, err.Error())
+		template = GatewayTimeOut(content, err.Error())
 	case http.StatusLocked:
-		template = templates.Locked(content, err.Error())
+		template = Locked(content, err.Error())
 	case http.StatusNotAcceptable:
-		template = templates.NotAcceptable(content, err.Error())
+		template = NotAcceptable(content, err.Error())
 	default:
-		template = templates.InternalServerError(content, errors.New("invalid reply request"))
+		template = InternalServerError(content, errors.New("invalid reply request"))
 	}
 
 	return ctx.JSON(httpStatus, template)

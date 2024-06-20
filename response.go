@@ -1,4 +1,4 @@
-package templates
+package simutils
 
 import (
 	"encoding/json"

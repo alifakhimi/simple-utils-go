@@ -1,4 +1,4 @@
-package rest
+package simrest
 
 import (
 	"database/sql/driver"

@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"net/url"
 
+	"github.com/alifakhimi/simple-utils-go/simrest"
 	"github.com/go-resty/resty/v2"
-
-	"github.com/alifakhimi/simple-utils-go/rest"
 )
 
 type RestyClientInfo struct {
@@ -16,7 +15,7 @@ type RestyClientInfo struct {
 
 func NewRestyClient(info *RestyClientInfo) (client *resty.Client, err error) {
 	if info == nil {
-		return nil, rest.ErrInvalidRestClientInfo
+		return nil, simrest.ErrInvalidRestClientInfo
 	}
 
 	if _, err = url.Parse(info.BaseURL); err != nil {

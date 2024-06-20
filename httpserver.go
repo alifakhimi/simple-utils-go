@@ -1,4 +1,4 @@
-package httpserver
+package simutils
 
 import (
 	"context"
@@ -14,8 +14,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	echoSwagger "github.com/swaggo/echo-swagger"
-
-	simutils "github.com/alifakhimi/simple-utils-go"
 )
 
 type (
@@ -83,7 +81,7 @@ func (h *HttpServer) newEcho() (err error) {
 
 	// Add default routes
 	h.prefixGroup.Any("/healthinfo", func(ctx echo.Context) error {
-		return simutils.Reply(
+		return Reply(
 			ctx,
 			http.StatusOK,
 			nil,
