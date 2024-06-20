@@ -2,8 +2,6 @@ package simutils
 
 import (
 	valid "github.com/asaskevich/govalidator"
-
-	"github.com/alifakhimi/simple-service-go/utils/enums"
 )
 
 // Dict ...
@@ -107,10 +105,10 @@ var DictSql = map[rune]string{
 }
 
 // ArabicPersianAI ...
-func ArabicPersianAI(driver enums.DatabaseDriver, source string) (str string) {
+func ArabicPersianAI(driver DatabaseDriver, source string) (str string) {
 	for _, ch := range source {
 		switch driver {
-		case enums.SQLServer:
+		case SQLServer:
 			if replaceCh, ok := DictSql[ch]; ok {
 				str += replaceCh
 			} else {
@@ -128,7 +126,7 @@ func ArabicPersianAI(driver enums.DatabaseDriver, source string) (str string) {
 	return
 }
 
-func CorrectSimilarChars(driver enums.DatabaseDriver, value interface{}) interface{} {
+func CorrectSimilarChars(driver DatabaseDriver, value interface{}) interface{} {
 	switch v := value.(type) {
 	case string:
 		if !valid.IsASCII(v) {

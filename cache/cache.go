@@ -5,9 +5,10 @@ import (
 	"errors"
 	"time"
 
-	"github.com/alifakhimi/simple-service-go/utils/templates"
 	"github.com/go-redis/redis/v8"
 	"github.com/labstack/echo/v4"
+
+	"github.com/alifakhimi/simple-utils-go/templates"
 )
 
 // Error block

@@ -12,7 +12,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/alifakhimi/simple-service-go/utils/templates"
+	"github.com/alifakhimi/simple-utils-go/templates"
 )
 
 func IsDigit(s string) bool {

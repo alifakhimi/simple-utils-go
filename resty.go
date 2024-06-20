@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-resty/resty/v2"
 
-	"github.com/alifakhimi/simple-service-go/utils/rest"
+	"github.com/alifakhimi/simple-utils-go/rest"
 )
 
 type RestyClientInfo struct {

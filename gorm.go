@@ -8,8 +8,6 @@ import (
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-
-	"github.com/alifakhimi/simple-service-go/utils/enums"
 )
 
 var mapURLToDBOperator = map[string]string{
@@ -52,7 +50,7 @@ func GetID(val interface{}) PID {
 	return Parse(fmt.Sprintf("%s", value))
 }
 
-func ParseFilters(db *gorm.DB, driver enums.DatabaseDriver, filters map[string][]FilterValue, mapKeyToColumn map[string][]string) (*gorm.DB, error) {
+func ParseFilters(db *gorm.DB, driver DatabaseDriver, filters map[string][]FilterValue, mapKeyToColumn map[string][]string) (*gorm.DB, error) {
 	var (
 		err error
 	)

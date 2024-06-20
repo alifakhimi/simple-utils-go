@@ -3,7 +3,6 @@ module github.com/alifakhimi/simple-utils-go
 go 1.22.3
 
 require (
-	github.com/alifakhimi/simple-service-go v0.0.0-20240619205804-54b3c9f9bd64
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-resty/resty/v2 v2.13.1

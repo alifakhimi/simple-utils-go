@@ -15,7 +15,7 @@ import (
 	"github.com/labstack/gommon/log"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
-	"github.com/alifakhimi/simple-service-go/utils"
+	simutils "github.com/alifakhimi/simple-utils-go"
 )
 
 type (
@@ -83,7 +83,7 @@ func (h *HttpServer) newEcho() (err error) {
 
 	// Add default routes
 	h.prefixGroup.Any("/healthinfo", func(ctx echo.Context) error {
-		return utils.Reply(
+		return simutils.Reply(
 			ctx,
 			http.StatusOK,
 			nil,
