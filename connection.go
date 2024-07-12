@@ -12,6 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -322,6 +323,8 @@ func dialector(dbConn *DBConnection) gorm.Dialector {
 			)
 		}
 		return sqlserver.Open(dsn)
+	case SQLite:
+		return sqlite.Open(dsn)
 	}
 
 	return nil
