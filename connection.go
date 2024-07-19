@@ -1,6 +1,7 @@
 package simutils
 
 import (
+	"database/sql"
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
@@ -324,7 +325,17 @@ func dialector(dbConn *DBConnection) gorm.Dialector {
 		}
 		return sqlserver.Open(dsn)
 	case SQLite:
-		return sqlite.Open(dsn)
+		// Connect to the database
+		sqliteDB, err := sql.Open("sqlite3", dsn)
+		if err != nil {
+			panic("failed to connect database")
+		}
+		defer sqliteDB.Close()
+
+		// Add the REGEXP function
+		addRegexpFunction(sqliteDB)
+		return sqlite.Dialector{Conn: sqliteDB}
+		// return sqlite.Open(dsn)
 	}
 
 	return nil
