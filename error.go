@@ -1,6 +1,9 @@
 package simutils
 
-import "errors"
+import (
+	"encoding/json"
+	"errors"
+)
 
 var (
 	ErrNotFound         = errors.New("not found")
@@ -9,3 +12,13 @@ var (
 	ErrAlreadyExist     = errors.New("already exist")
 	ErrSystemItemDelete = errors.New("you cant delete system items")
 )
+
+type Error string
+
+func (e Error) Error() string {
+	return string(e)
+}
+
+func (e Error) MarshalJSON() ([]byte, error) {
+	return json.Marshal(e.Error())
+}
