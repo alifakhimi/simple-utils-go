@@ -8,7 +8,7 @@ import (
 
 // Model ...
 type Model struct {
-	ID        PID            `json:"id,omitempty" gorm:"column:id;primarykey"`
+	ID        PID            `json:"id,omitempty" gorm:"column:id;primaryKey"`
 	CreatedAt time.Time      `json:"created_at,omitempty"`
 	UpdatedAt time.Time      `json:"updated_at,omitempty"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`

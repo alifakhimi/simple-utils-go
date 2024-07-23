@@ -18,7 +18,7 @@ var (
 type CommonTableFields struct {
 	Model
 	Active      bool           `json:"active,omitempty" gorm:"default:false"`
-	Version     int64          `json:"version,omitempty"`
+	Version     int            `json:"version,omitempty"`
 	Description sql.NullString `json:"description,omitempty"`
 	UserID      NullPID        `json:"user_id,omitempty"`
 	User        *User          `json:"user,omitempty" gorm:"<-:false"`
