@@ -26,8 +26,8 @@ github.com/AzureAD/microsoft-authentication-library-for-go v1.2.1 h1:DzHpqpoJVaC
 github.com/AzureAD/microsoft-authentication-library-for-go v1.2.1/go.mod h1:wP83P5OoQ5p6ip3ScPr0BAq0BvuPAvacpEuSzyouqAI=
 github.com/KyleBanks/depth v1.2.1 h1:5h8fQADFrWtarTdtDudMmGsC7GPbOAu6RVB3ffsVFHc=
 github.com/KyleBanks/depth v1.2.1/go.mod h1:jzSb9d0L43HxTQfT+oSA1EEp2q+ne2uh6XgeJcm8brE=
-github.com/alifakhimi/simple-utils-go/simrest v0.0.0-20240620100508-d9e1c7d977a7 h1:7u496A3h8zcZFTxufaAXF3Fv5WWPp7SbHJi8NOUN6/8=
-github.com/alifakhimi/simple-utils-go/simrest v0.0.0-20240620100508-d9e1c7d977a7/go.mod h1:FbIlSdJLsvGKQAf8wCvzjSAB6HLJXyEFX+vlagWZIKg=
+github.com/alifakhimi/simple-utils-go/simrest v0.0.0-20240723093118-3c78d436c37f h1:bhxEleD8RCZpg+GYTZauuJ536UdSBsaXHp2Jdw4pRPw=
+github.com/alifakhimi/simple-utils-go/simrest v0.0.0-20240723093118-3c78d436c37f/go.mod h1:FbIlSdJLsvGKQAf8wCvzjSAB6HLJXyEFX+vlagWZIKg=
 github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 h1:DklsrG3dyBCFEj5IhUbnKptjxatkF07cF2ak3yi77so=
 github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2/go.mod h1:WaHUgvxTVq04UNunO+XhnAqY/wQc+bxr74GqbsZ/Jqw=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=

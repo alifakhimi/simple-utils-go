@@ -4,12 +4,12 @@ go 1.22.3
 
 replace github.com/alifakhimi/simple-utils-go => ../
 
-require github.com/alifakhimi/simple-utils-go v0.0.0-00010101000000-000000000000
+require github.com/alifakhimi/simple-utils-go v0.0.6
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/alifakhimi/simple-utils-go/simrest v0.0.0-20240620100508-d9e1c7d977a7 // indirect
+	github.com/alifakhimi/simple-utils-go/simrest v0.0.0-20240723093118-3c78d436c37f // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect

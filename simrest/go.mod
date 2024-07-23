@@ -2,8 +2,6 @@ module github.com/alifakhimi/simple-utils-go/simrest
 
 go 1.22.3
 
-replace github.com/alifakhimi/simple-utils-go => ../
-
 require (
 	github.com/go-resty/resty/v2 v2.13.1
 	gorm.io/gorm v1.25.10

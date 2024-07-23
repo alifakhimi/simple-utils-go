@@ -2,10 +2,7 @@ module github.com/alifakhimi/simple-utils-go
 
 go 1.22.3
 
-replace (
-	github.com/alifakhimi/simple-utils-go/simrest => ./simrest
-	github.com/alifakhimi/simple-utils-go/simscheme => ./simscheme
-)
+replace github.com/alifakhimi/simple-utils-go/simrest => ./simrest
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
@@ -25,7 +22,7 @@ require (
 )
 
 require (
-	github.com/alifakhimi/simple-utils-go/simrest v0.0.0-00010101000000-000000000000
+	github.com/alifakhimi/simple-utils-go/simrest v0.0.0-20240723093118-3c78d436c37f
 	github.com/mattn/go-sqlite3 v1.14.22
 )
 
