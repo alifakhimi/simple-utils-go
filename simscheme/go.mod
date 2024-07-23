@@ -4,10 +4,7 @@ go 1.22.3
 
 replace github.com/alifakhimi/simple-utils-go => ../
 
-require (
-	github.com/alifakhimi/simple-utils-go v0.0.0-00010101000000-000000000000
-	gitlab.sikapp.ir/sikatech/eshop/eshop-sdk-go-v1 v1.11.187
-)
+require github.com/alifakhimi/simple-utils-go v0.0.0-00010101000000-000000000000
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect

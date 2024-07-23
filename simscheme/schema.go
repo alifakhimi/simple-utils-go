@@ -1,6 +1,6 @@
-package scheme
+package simscheme
 
-import "gitlab.sikapp.ir/sikatech/eshop/eshop-sdk-go-v1/helpers"
+import simutils "github.com/alifakhimi/simple-utils-go"
 
 type Schema struct {
 	Label     Label             `json:"label,omitempty"`
@@ -64,13 +64,13 @@ func (schema *Schema) GetDocument() *Document {
 
 func (schema *Schema) GetDocumentByType(t any) *Document {
 	return schema.GetDocumentByLabel(
-		schema.BuildDocumentLabel(Key(helpers.GetTableName(t))),
+		schema.BuildDocumentLabel(Key(simutils.GetTableName(t))),
 	)
 }
 
 func (doc *Document) ReadAll(dst any) error {
 	return nil
-} 
+}
 
 func (schema *Schema) GetDocumentByLabel(label *Label) *Document {
 	if label == nil {

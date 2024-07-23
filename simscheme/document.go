@@ -1,4 +1,4 @@
-package scheme
+package simscheme
 
 import (
 	"fmt"

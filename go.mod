@@ -2,10 +2,12 @@ module github.com/alifakhimi/simple-utils-go
 
 go 1.22.3
 
-replace github.com/alifakhimi/simple-utils-go/simrest => ./simrest
+replace (
+	github.com/alifakhimi/simple-utils-go/simrest => ./simrest
+	github.com/alifakhimi/simple-utils-go/simscheme => ./simscheme
+)
 
 require (
-	github.com/alifakhimi/simple-utils-go/simrest v0.0.0-20240620100508-d9e1c7d977a7
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-resty/resty/v2 v2.13.1
@@ -22,7 +24,10 @@ require (
 	gorm.io/plugin/dbresolver v1.5.2
 )
 
-require github.com/mattn/go-sqlite3 v1.14.22 // indirect
+require (
+	github.com/alifakhimi/simple-utils-go/simrest v0.0.0-00010101000000-000000000000
+	github.com/mattn/go-sqlite3 v1.14.22
+)
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect

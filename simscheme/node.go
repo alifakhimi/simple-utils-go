@@ -1,4 +1,4 @@
-package scheme
+package simscheme
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"strings"
 
-	"gitlab.sikapp.ir/sikatech/eshop/eshop-sdk-go-v1/helpers"
+	simutils "github.com/alifakhimi/simple-utils-go"
 )
 
 type Node struct {
@@ -47,7 +47,7 @@ func (node *Node) SetData(t any) *Node {
 }
 
 func GetScope(value any) string {
-	return helpers.GetTableName(value)
+	return simutils.GetTableName(value)
 }
 
 func (doc *Document) BuildNodeLabel(value any) *Label {
@@ -99,7 +99,7 @@ func GetKeys(val any) []Key {
 
 			f := t.Field(i)
 			// fmt.Println("Field Name", f.Name, "Field Type", f.Type, "Tag", f.Tag)
-			gormPrimaryTag := helpers.ItemExists(strings.Split(strings.ToLower(f.Tag.Get("gorm")), ";"), strings.ToLower("primaryKey"))
+			gormPrimaryTag := simutils.ItemExists(strings.Split(strings.ToLower(f.Tag.Get("gorm")), ";"), strings.ToLower("primaryKey"))
 			if gormPrimaryTag {
 				keys = append(keys, Key(fmt.Sprintf("%v", v.Field(i))))
 			}
