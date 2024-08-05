@@ -3,8 +3,6 @@ package simscheme
 import (
 	"fmt"
 	"reflect"
-
-	simutils "github.com/alifakhimi/simple-utils-go"
 )
 
 type Document struct {
@@ -13,38 +11,38 @@ type Document struct {
 	Nodes     map[Key]*Node     `json:"nodes,omitempty"`
 }
 
-func (schema *Schema) BuildDocumentLabel(keys ...Key) *Label {
-	return schema.Label.Append(documentName, keys...)
+func (doc *Document) Len() int {
+	return len(doc.Nodes)
 }
 
-func (schema *Schema) NewDocumentWithKeys(keys ...Key) *Document {
-	return schema.NewDocumentWithLabel(
-		schema.BuildDocumentLabel(keys...),
+func (doc *Document) BuildNodeLabel(value any) *Label {
+	scope := ""
+	if len(doc.Label.Keys) > 0 {
+		scope = string(doc.Label.Keys[0])
+	} else {
+		scope = GetScope(value)
+	}
+	return doc.Label.Append(scope, GetKeys(value)...)
+}
+
+func (doc *Document) NewNode(value any) *Node {
+	return doc.NewNodeWithLabel(
+		doc.BuildNodeLabel(value),
+		value,
 	)
 }
 
-func (schema *Schema) NewDocumentWithType(t any) *Document {
-	return schema.NewDocumentWithLabel(
-		schema.BuildDocumentLabel(Key(simutils.GetTableName(t))),
-	)
-}
-
-func (schema *Schema) NewDocument() *Document {
-	return schema.NewDocumentWithKeys(defDocumentLabel)
-}
-
-func (schema *Schema) NewDocumentWithLabel(label *Label) *Document {
+func (doc *Document) NewNodeWithLabel(label *Label, value any) *Node {
 	if label == nil {
-		return schema.NewDocument()
+		return doc.NewNode(value)
 	}
 
-	doc := &Document{
-		Label:     *label,
-		Relations: make(map[Key]*Relation),
-		Nodes:     make(map[Key]*Node),
+	node := &Node{
+		Label: *label,
+		Data:  value,
 	}
 
-	return doc
+	return node
 }
 
 func (doc *Document) GetData(dst any) error {
@@ -69,6 +67,15 @@ func (doc *Document) GetData(dst any) error {
 	}
 
 	return nil
+}
+
+func (doc *Document) LabelExists(label Label) bool {
+	return doc.Exists(label.GetKey())
+}
+
+func (doc *Document) Exists(key Key) bool {
+	_, exists := doc.Nodes[key]
+	return exists
 }
 
 func (doc *Document) AddNode(value any, relations ...any) *Node {

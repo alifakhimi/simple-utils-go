@@ -28,6 +28,40 @@ func BuildSchemaLabel(keys ...Key) *Label {
 	return BuildLabel(schemaName, keys...)
 }
 
+func (schema *Schema) BuildDocumentLabel(keys ...Key) *Label {
+	return schema.Label.Append(documentName, keys...)
+}
+
+func (schema *Schema) NewDocumentWithKeys(keys ...Key) *Document {
+	return schema.NewDocumentWithLabel(
+		schema.BuildDocumentLabel(keys...),
+	)
+}
+
+func (schema *Schema) NewDocumentWithType(t any) *Document {
+	return schema.NewDocumentWithLabel(
+		schema.BuildDocumentLabel(Key(simutils.GetTableName(t))),
+	)
+}
+
+func (schema *Schema) NewDocument() *Document {
+	return schema.NewDocumentWithKeys(defDocumentLabel)
+}
+
+func (schema *Schema) NewDocumentWithLabel(label *Label) *Document {
+	if label == nil {
+		return schema.NewDocument()
+	}
+
+	doc := &Document{
+		Label:     *label,
+		Relations: make(map[Key]*Relation),
+		Nodes:     make(map[Key]*Node),
+	}
+
+	return doc
+}
+
 func (schema *Schema) AddNewDocument() *Document {
 	return schema.AddDocument(schema.NewDocument())
 }
