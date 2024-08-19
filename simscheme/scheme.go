@@ -67,6 +67,11 @@ func GetKeys(val any) []Key {
 	// to find the kind
 	if v.Kind() == reflect.Struct {
 		// fmt.Println("Number of fields", v.NumField())
+		var (
+			gormKeys = []Key{}
+			simKeys  = []Key{}
+		)
+
 		for i := 0; i < v.NumField(); i++ {
 			t := v.Type()
 
@@ -75,10 +80,19 @@ func GetKeys(val any) []Key {
 
 			f := t.Field(i)
 			// fmt.Println("Field Name", f.Name, "Field Type", f.Type, "Tag", f.Tag)
-			gormPrimaryTag := simutils.ItemExists(strings.Split(strings.ToLower(f.Tag.Get("gorm")), ";"), strings.ToLower("primaryKey"))
-			if gormPrimaryTag {
-				keys = append(keys, Key(fmt.Sprintf("%v", v.Field(i))))
+			if simutils.ItemExists(strings.Split(strings.ToLower(f.Tag.Get("sim")), ";"), strings.ToLower("primaryKey")) {
+				simKeys = append(simKeys, Key(fmt.Sprintf("%v", v.Field(i))))
 			}
+
+			if simutils.ItemExists(strings.Split(strings.ToLower(f.Tag.Get("gorm")), ";"), strings.ToLower("primaryKey")) {
+				gormKeys = append(gormKeys, Key(fmt.Sprintf("%v", v.Field(i))))
+			}
+		}
+
+		if len(simKeys) > 0 {
+			keys = append(keys, simKeys...)
+		} else if len(gormKeys) > 0 {
+			keys = append(keys, gormKeys...)
 		}
 	}
 
