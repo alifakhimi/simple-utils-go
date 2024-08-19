@@ -1,8 +1,10 @@
 package simutils
 
 import (
-	"database/sql"
 	"errors"
+	"time"
+
+	"gorm.io/gorm"
 )
 
 var (
@@ -16,14 +18,21 @@ var (
 
 // CommonTableFields common table fields
 type CommonTableFields struct {
-	Model
-	Active      bool           `json:"active,omitempty" gorm:"default:false"`
-	Version     int            `json:"version,omitempty"`
-	Description sql.NullString `json:"description,omitempty"`
-	UserID      NullPID        `json:"user_id,omitempty"`
+	ID          PID            `json:"id,omitempty" gorm:"column:id;primaryKey"`
+	CreatedAt   time.Time      `json:"created_at,omitempty"`
+	UpdatedAt   time.Time      `json:"updated_at,omitempty"`
+	DeletedAt   gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`
+	Active      NullBool       `json:"active,omitempty" gorm:"default:false"`
+	Version     int            `json:"version,omitempty" gorm:"default:null"`
+	Description string         `json:"description,omitempty" gorm:"default:null"`
+	UserID      PID            `json:"user_id,omitempty" gorm:"default:null"`
 	User        *User          `json:"user,omitempty" gorm:"<-:false"`
-	Meta        JSON           `json:"meta,omitempty"`
+	Meta        JSON           `json:"meta,omitempty" gorm:"default:null"`
 	Error       Error          `json:"error,omitempty" gorm:"-"`
+}
+
+func (m CommonTableFields) IsDeleted() bool {
+	return m.DeletedAt.Valid
 }
 
 type PolymorphicFields struct {
@@ -33,22 +42,18 @@ type PolymorphicFields struct {
 
 // ToCommonTableFields to common table fields
 func ToCommonTableFields(id PID, user *User) (ctf CommonTableFields, err error) {
+	ctf = CommonTableFields{
+		ID:   id,
+		User: user,
+	}
+
 	if user == nil {
-		return ctf, ErrCommonTableFieldsInvalidUser
+		err = ErrCommonTableFieldsInvalidUser
+	} else {
+		ctf.UserID = user.ID
 	}
 
-	userNullPID, err := user.ID.ToNullPID()
-	if err != nil {
-		return ctf, err
-	}
-
-	return CommonTableFields{
-		Model: Model{
-			ID: id,
-		},
-		UserID: userNullPID,
-		User:   user,
-	}, nil
+	return
 }
 
 func CheckNilError(values ...interface{}) error {
