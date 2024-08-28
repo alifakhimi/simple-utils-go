@@ -11,6 +11,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/driver/sqlserver"
@@ -335,6 +336,8 @@ func dialector(dbConn *DBConnection) gorm.Dialector {
 		// addRegexpFunction(sqliteDB)
 		// return sqlite.Dialector{Conn: sqliteDB}
 		return sqlite.Open(dsn)
+	case MySQL:
+		return mysql.Open(dsn)
 	}
 
 	return nil
