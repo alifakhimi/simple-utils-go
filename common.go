@@ -24,7 +24,7 @@ type CommonTableFields struct {
 	DeletedAt   gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index;"`
 	Active      NullBool       `json:"active,omitempty" gorm:"default:true;"`
 	Version     int            `json:"version,omitempty" gorm:"default:NULL;"`
-	Description string         `json:"description,omitempty"`
+	Description string         `json:"description,omitempty" gorm:"default:NULL;"`
 	UserID      PID            `json:"user_id,omitempty" gorm:"default:NULL;"`
 	User        *User          `json:"user,omitempty" gorm:"<-:false;"`
 	Meta        JSON           `json:"meta,omitempty" gorm:"default:NULL;"`
