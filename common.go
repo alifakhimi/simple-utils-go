@@ -18,16 +18,16 @@ var (
 
 // CommonTableFields common table fields
 type CommonTableFields struct {
-	ID          PID            `json:"id,omitempty" gorm:"column:id;primaryKey"`
+	ID          PID            `json:"id,omitempty" gorm:"column:id;primaryKey;"`
 	CreatedAt   time.Time      `json:"created_at,omitempty"`
 	UpdatedAt   time.Time      `json:"updated_at,omitempty"`
-	DeletedAt   gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`
-	Active      NullBool       `json:"active,omitempty" gorm:"default:false"`
-	Version     int            `json:"version,omitempty" gorm:"default:null"`
-	Description string         `json:"description,omitempty" gorm:"default:null"`
-	UserID      PID            `json:"user_id,omitempty" gorm:"default:null"`
-	User        *User          `json:"user,omitempty" gorm:"<-:false"`
-	Meta        JSON           `json:"meta,omitempty" gorm:"default:null"`
+	DeletedAt   gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index;"`
+	Active      NullBool       `json:"active,omitempty" gorm:"default:true;"`
+	Version     int            `json:"version,omitempty" gorm:"default:NULL;"`
+	Description string         `json:"description,omitempty"`
+	UserID      PID            `json:"user_id,omitempty" gorm:"default:NULL;"`
+	User        *User          `json:"user,omitempty" gorm:"<-:false;"`
+	Meta        JSON           `json:"meta,omitempty" gorm:"default:NULL;"`
 	Error       Error          `json:"error,omitempty" gorm:"-"`
 }
 
