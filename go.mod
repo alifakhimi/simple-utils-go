@@ -23,13 +23,11 @@ require (
 
 require (
 	github.com/alifakhimi/simple-utils-go/simrest v0.0.0-20240723093118-3c78d436c37f
+	github.com/gosimple/slug v1.14.0
 	github.com/mattn/go-sqlite3 v1.14.22
 )
 
-require (
-	github.com/gosimple/slug v1.14.0 // indirect
-	github.com/gosimple/unidecode v1.0.1 // indirect
-)
+require github.com/gosimple/unidecode v1.0.1 // indirect
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect

@@ -82,9 +82,7 @@ func GetKeys(val any) []Key {
 			// fmt.Println("Field Name", f.Name, "Field Type", f.Type, "Tag", f.Tag)
 			if simutils.ItemExists(strings.Split(strings.ToLower(f.Tag.Get("sim")), ";"), strings.ToLower("primaryKey")) {
 				simKeys = append(simKeys, Key(fmt.Sprintf("%v", v.Field(i))))
-			}
-
-			if simutils.ItemExists(strings.Split(strings.ToLower(f.Tag.Get("gorm")), ";"), strings.ToLower("primaryKey")) {
+			} else if simutils.ItemExists(strings.Split(strings.ToLower(f.Tag.Get("gorm")), ";"), strings.ToLower("primaryKey")) {
 				gormKeys = append(gormKeys, Key(fmt.Sprintf("%v", v.Field(i))))
 			}
 		}
