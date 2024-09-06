@@ -410,18 +410,3 @@ func Cast(src interface{}, dst interface{}) {
 		}
 	}
 }
-
-func SetToNilIfZeroValue[T any](value T) *T {
-	// با استفاده از reflect مقدار و نوع ورودی را دریافت می‌کنیم
-	val := reflect.ValueOf(value)
-	kind := val.Kind()
-
-	// بررسی مقدار صفر بودن و نوع ورودی
-	if val.IsZero() && kind != reflect.Func && kind != reflect.Chan && kind != reflect.Interface {
-		// اگر مقدار صفر بود و نوع غیر قابل تغییر بود، پوینتر نال برگردان
-		return nil
-	}
-
-	// اگر مقدار صفر نبود، یا ورودی قابل تغییر بود، ورودی را به صورت پوینتر برگردان
-	return &value
-}
