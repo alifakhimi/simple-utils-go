@@ -22,12 +22,12 @@ type CommonTableFields struct {
 	CreatedAt   time.Time      `json:"created_at,omitempty"`
 	UpdatedAt   time.Time      `json:"updated_at,omitempty"`
 	DeletedAt   gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index;"`
-	Active      NullBool       `json:"active,omitempty" gorm:"default:true;"`
-	Version     int            `json:"version,omitempty" gorm:"default:NULL;"`
-	Description string         `json:"description,omitempty" gorm:"default:NULL;"`
-	UserID      PID            `json:"user_id,omitempty" gorm:"default:NULL;"`
+	Active      NullBool       `json:"active,omitempty" sql:"default:true;"`
+	Version     int            `json:"version,omitempty" sql:"default:NULL;"`
+	Description string         `json:"description,omitempty"`
+	UserID      PID            `json:"user_id,omitempty" sql:"default:NULL;"`
 	User        *User          `json:"user,omitempty" gorm:"<-:false;"`
-	Meta        JSON           `json:"meta,omitempty" gorm:"default:NULL;"`
+	Meta        JSON           `json:"meta,omitempty" sql:"default:NULL;"`
 	Error       Error          `json:"error,omitempty" gorm:"-"`
 }
 
