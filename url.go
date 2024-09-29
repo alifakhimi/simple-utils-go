@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/asaskevich/govalidator"
@@ -137,4 +138,13 @@ func cloneURL(u *URL) *URL {
 		*u2.User = *u.User
 	}
 	return u2
+}
+
+// IsURLEncoded checks if a string contains URL-encoded characters
+func IsURLEncoded(s string) bool {
+	// Regular expression to detect URL-encoded characters (e.g., %20, %D8, etc.)
+	encodedRegex := regexp.MustCompile(`%[0-9A-Fa-f]{2}`)
+
+	// Check if the string contains URL-encoded characters
+	return encodedRegex.MatchString(s)
 }
