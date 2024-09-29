@@ -46,7 +46,13 @@ func DecodeAndCheckSlug(s string) (string, error) {
 }
 
 // MakeSlug takes any string and converts it to a URL-friendly slug
-func MakeSlug(name string) (Slug, error) {
+func MakeSlug(name string) Slug {
+	s, _ := MakeSlugE(name)
+	return s
+}
+
+// MakeSlugE takes any string and converts it to a URL-friendly slug
+func MakeSlugE(name string) (Slug, error) {
 	if IsURLEncoded(name) {
 		if s, err := DecodeAndCheckSlug(name); err != nil {
 			return "", err
