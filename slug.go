@@ -77,7 +77,7 @@ func MakeSlugE(name string) (Slug, error) {
 	// Remove multiple dashes
 	name = strings.ReplaceAll(name, "--", "-")
 
-	if len(name) < 3 {
+	if len(name) == 0 || name == "-" {
 		return "", ErrInvalidSlug
 	}
 
