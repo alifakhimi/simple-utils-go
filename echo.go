@@ -8,22 +8,54 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"unicode"
 
+	"github.com/alifakhimi/simple-utils-go/multierror"
 	"github.com/labstack/echo/v4"
 )
 
-func IsDigit(s string) bool {
-	if strings.TrimSpace(s) == "" {
-		return false
-	}
+// Define custom errors for specific scenarios
+var (
+	// Error when casting echo.Context to custom Context fails
+	ErrBindContextFailed = errors.New("binding context failed")
+	// Error when type assertion of RequestModel fails
+	ErrRequestModelTypeAssertion = errors.New("request model type assertion failed")
+)
 
-	for _, c := range s {
-		if !unicode.IsDigit(c) {
-			return false
-		}
+// Context is a custom structure that embeds echo.Context and adds a RequestModel field
+type Context struct {
+	echo.Context
+	// RequestModel can hold any type of data
+	RequestModel any
+}
+
+// Binder attempts to bind a given object to the custom Context
+func Binder(echoContext echo.Context, i any) (*Context, error) {
+	// Check if echoContext can be cast to *Context
+	if ctx, ok := echoContext.(*Context); !ok {
+		return nil, ErrBindContextFailed // Return error if casting fails
+	} else if err := ctx.Bind(i); err != nil { // Attempt to bind the object to the context
+		return nil, err // Return error if binding fails
+	} else {
+		ctx.RequestModel = i // Assign the bound object to RequestModel
+		return ctx, nil      // Return the updated context
 	}
-	return true
+}
+
+// GetRequestModel extracts the RequestModel from Context and performs a type assertion
+func GetRequestModel[T any](ctx *Context) (T, error) {
+	// Check if RequestModel is not nil
+	if ctx.RequestModel != nil {
+		// Attempt to cast RequestModel to the desired type T
+		if value, ok := ctx.RequestModel.(T); ok {
+			return value, nil // Return the casted value if successful
+		} else {
+			return value, ErrRequestModelTypeAssertion // Return error if type assertion fails
+		}
+	} else {
+		// If RequestModel is nil, return the zero value of type T and an error
+		var zv T
+		return zv, errors.New("type assertion failed")
+	}
 }
 
 func ReplyTemplate(ctx echo.Context, httpStatus int, err error, template interface{}, meta interface{}) error {
@@ -48,34 +80,60 @@ func Reply(ctx echo.Context, httpStatus int, err error, content map[string]inter
 
 	switch httpStatus {
 	case http.StatusOK:
-		template = Ok(content, err, meta)
+		template = ResponseOk(content, multierror.Join(err), meta)
 	case http.StatusCreated:
-		template = Created(content, meta)
+		template = ResponseCreated(content, meta)
 	case http.StatusBadRequest:
-		template = BadRequest(content, err.Error())
+		template = ResponseBadRequest(content, multierror.Join(err))
 	case http.StatusInternalServerError:
-		template = InternalServerError(content, err.Error())
+		template = ResponseInternalServerError(content, multierror.Join(err))
 	case http.StatusNotFound:
-		template = NotFound(content, err.Error())
+		template = ResponseNotFound(content, multierror.Join(err))
 	case http.StatusUnprocessableEntity:
-		template = UnprocessableEntity(content, err.Error())
+		template = ResponseUnprocessableEntity(content, multierror.Join(err))
 	case http.StatusMethodNotAllowed:
-		template = MethodNotAllowed(content, err.Error())
+		template = ResponseMethodNotAllowed(content, multierror.Join(err))
 	case http.StatusUnauthorized:
-		template = Unauthorized(content, err.Error())
+		template = ResponseUnauthorized(content, multierror.Join(err))
 	case http.StatusForbidden:
-		template = Forbidden(content, err.Error())
+		template = ResponseForbidden(content, multierror.Join(err))
 	case http.StatusGatewayTimeout:
-		template = GatewayTimeOut(content, err.Error())
+		template = ResponseGatewayTimeOut(content, multierror.Join(err))
 	case http.StatusLocked:
-		template = Locked(content, err.Error())
+		template = ResponseLocked(content, multierror.Join(err))
 	case http.StatusNotAcceptable:
-		template = NotAcceptable(content, err.Error())
+		template = ResponseNotAcceptable(content, multierror.Join(err))
 	default:
-		template = InternalServerError(content, errors.New("invalid reply request"))
+		template = ResponseInternalServerError(content, multierror.Join(err))
 	}
 
 	return ctx.JSON(httpStatus, template)
+}
+
+// GetWithCode return template with considering error code
+func GetWithCode(data interface{}, code int, err error) (template *ResponseTemplate) {
+	msg := err.Error()
+
+	switch code {
+	case http.StatusInternalServerError:
+		template = ResponseInternalServerError(data, msg)
+	case http.StatusBadRequest:
+		template = ResponseBadRequest(data, msg)
+	case http.StatusForbidden:
+		template = ResponseForbidden(data, msg)
+	case http.StatusNotFound:
+		template = ResponseNotFound(data, msg)
+	case http.StatusUnprocessableEntity:
+		template = ResponseUnprocessableEntity(data, msg)
+	case http.StatusUnauthorized:
+		template = ResponseUnauthorized(data, msg)
+	case http.StatusMethodNotAllowed:
+		template = ResponseMethodNotAllowed(data, msg)
+	default:
+		template = ResponseStatusNotImplemented(data, msg)
+	}
+
+	return
 }
 
 // ExportRoutes ...
@@ -161,4 +219,16 @@ func ErrorToHttpStatusCode(err error) (status int) {
 	}
 
 	return
+}
+
+func PopQueryParam[T string | []string](qp url.Values, key string) T {
+	var result T
+	switch any(result).(type) {
+	case string:
+		result = any(qp.Get(key)).(T)
+	case []string:
+		result = any(qp[key]).(T)
+	}
+	qp.Del(key)
+	return result
 }

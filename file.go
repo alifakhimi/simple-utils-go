@@ -4,25 +4,42 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
+	"time"
 )
 
+// CreateFileOption holds optional configuration for creating files and directories
 type CreateFileOption struct {
-	// e.g. 755
+	// Directory permission (e.g., 755 for rwxr-xr-x)
 	DirPerm os.FileMode
-	// e.g. 644
+	// File permission (e.g., 644 for rw-r--r--)
 	FilePerm os.FileMode
-	// e.g. os.O_WRONLY|os.O_CREATE|os.O_TRUNC
+	// File flag (e.g., os.O_WRONLY|os.O_CREATE|os.O_TRUNC for write-only, create if not exist, and truncate)
 	FileFlag int
 }
 
-// CreateFile ensures that the directory exists and returns an open file ready for writing
+// FileNameFriendlyNowTime generates a file-system-friendly string representing the current time
+func FileNameFriendlyNowTime() string {
+	return FileNameFriendlyTime(time.Now().Local())
+}
+
+// FileNameFriendlyTime converts a time to a string without characters invalid for file names
+func FileNameFriendlyTime(t time.Time) string {
+	// Format the time as an ISO 8601 string (e.g., "2025-01-07T15:04:05Z07:00")
+	ts := t.Format(time.RFC3339)
+	// Replace invalid characters (':' and '-') with nothing to make it file-system-friendly
+	return strings.Replace(strings.Replace(ts, ":", "", -1), "-", "", -1)
+}
+
+// CreateFile ensures the directory exists and opens a file ready for writing
 func CreateFile(path string, opt ...CreateFileOption) (*os.File, error) {
 	var (
-		dirPerm  = os.FileMode(0755)
-		filePerm = os.FileMode(0644)
-		fileFlag = os.O_WRONLY | os.O_CREATE | os.O_TRUNC
+		dirPerm  = os.FileMode(0755)                      // Default directory permissions
+		filePerm = os.FileMode(0644)                      // Default file permissions
+		fileFlag = os.O_WRONLY | os.O_CREATE | os.O_TRUNC // Default file flags
 	)
 
+	// Override defaults with provided options, if any
 	for _, o := range opt {
 		if o.DirPerm > 0 {
 			dirPerm = o.DirPerm
@@ -35,15 +52,15 @@ func CreateFile(path string, opt ...CreateFileOption) (*os.File, error) {
 		}
 	}
 
-	// Get the directory path from the file path
+	// Extract the directory part of the provided file path
 	dir := filepath.Dir(path)
 
-	// Create the directory along the path if it doesn't exist
+	// Ensure the directory exists (creates intermediate directories if needed)
 	if err := os.MkdirAll(dir, dirPerm); err != nil {
 		return nil, fmt.Errorf("failed to create directories: %w", err)
 	}
 
-	// Open the file, create if it doesn't exist and truncate it if it does
+	// Open or create the file with the specified flags and permissions
 	file, err := os.OpenFile(path, fileFlag, filePerm)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create or open file: %w", err)

@@ -89,34 +89,8 @@ func (PaginateTemplate) Create(total, offset, limit int) *PaginateTemplate {
 	return pt
 }
 
-// GetWithCode return template with considering error code
-func GetWithCode(data interface{}, code int, err error) (template *ResponseTemplate) {
-	msg := err.Error()
-
-	switch code {
-	case http.StatusInternalServerError:
-		template = InternalServerError(data, msg)
-	case http.StatusBadRequest:
-		template = BadRequest(data, msg)
-	case http.StatusForbidden:
-		template = Forbidden(data, msg)
-	case http.StatusNotFound:
-		template = NotFound(data, msg)
-	case http.StatusUnprocessableEntity:
-		template = UnprocessableEntity(data, msg)
-	case http.StatusUnauthorized:
-		template = Unauthorized(data, msg)
-	case http.StatusMethodNotAllowed:
-		template = MethodNotAllowed(data, msg)
-	default:
-		template = StatusNotImplemented(data, msg)
-	}
-
-	return
-}
-
 // BadRequest ...
-func BadRequest(data, msg interface{}) *ResponseTemplate {
+func ResponseBadRequest(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusBadRequest,
 		Status:  http.StatusText(http.StatusBadRequest),
@@ -126,7 +100,7 @@ func BadRequest(data, msg interface{}) *ResponseTemplate {
 }
 
 // InternalServerError ...
-func InternalServerError(data, msg interface{}) *ResponseTemplate {
+func ResponseInternalServerError(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusInternalServerError,
 		Status:  http.StatusText(http.StatusInternalServerError),
@@ -136,7 +110,7 @@ func InternalServerError(data, msg interface{}) *ResponseTemplate {
 }
 
 // StatusNotImplemented ...
-func StatusNotImplemented(data, msg interface{}) *ResponseTemplate {
+func ResponseStatusNotImplemented(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusNotImplemented,
 		Status:  http.StatusText(http.StatusNotImplemented),
@@ -146,7 +120,7 @@ func StatusNotImplemented(data, msg interface{}) *ResponseTemplate {
 }
 
 // InternalServerErrorWithData ...
-func InternalServerErrorWithData(data, msg interface{}) *ResponseTemplate {
+func ResponseInternalServerErrorWithData(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusInternalServerError,
 		Status:  http.StatusText(http.StatusInternalServerError),
@@ -156,7 +130,7 @@ func InternalServerErrorWithData(data, msg interface{}) *ResponseTemplate {
 }
 
 // NotFound ...
-func NotFound(data, msg interface{}) *ResponseTemplate {
+func ResponseNotFound(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusNotFound,
 		Status:  http.StatusText(http.StatusNotFound),
@@ -166,7 +140,7 @@ func NotFound(data, msg interface{}) *ResponseTemplate {
 }
 
 // UnprocessableEntity ...
-func UnprocessableEntity(data, msg interface{}) *ResponseTemplate {
+func ResponseUnprocessableEntity(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusUnprocessableEntity,
 		Status:  http.StatusText(http.StatusUnprocessableEntity),
@@ -176,7 +150,7 @@ func UnprocessableEntity(data, msg interface{}) *ResponseTemplate {
 }
 
 // Unauthorized ...
-func Unauthorized(data, msg interface{}) *ResponseTemplate {
+func ResponseUnauthorized(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusUnauthorized,
 		Status:  http.StatusText(http.StatusUnauthorized),
@@ -186,7 +160,7 @@ func Unauthorized(data, msg interface{}) *ResponseTemplate {
 }
 
 // GatewayTimeOut ...
-func GatewayTimeOut(data, msg interface{}) *ResponseTemplate {
+func ResponseGatewayTimeOut(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusGatewayTimeout,
 		Status:  http.StatusText(http.StatusGatewayTimeout),
@@ -196,7 +170,7 @@ func GatewayTimeOut(data, msg interface{}) *ResponseTemplate {
 }
 
 // Locked ...
-func Locked(data, msg interface{}) *ResponseTemplate {
+func ResponseLocked(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusLocked,
 		Status:  http.StatusText(http.StatusLocked),
@@ -206,7 +180,7 @@ func Locked(data, msg interface{}) *ResponseTemplate {
 }
 
 // NotAcceptable ...
-func NotAcceptable(data, msg interface{}) *ResponseTemplate {
+func ResponseNotAcceptable(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusNotAcceptable,
 		Status:  http.StatusText(http.StatusNotAcceptable),
@@ -216,7 +190,7 @@ func NotAcceptable(data, msg interface{}) *ResponseTemplate {
 }
 
 // Forbidden ...
-func Forbidden(data, msg interface{}) *ResponseTemplate {
+func ResponseForbidden(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusForbidden,
 		Status:  http.StatusText(http.StatusForbidden),
@@ -226,7 +200,7 @@ func Forbidden(data, msg interface{}) *ResponseTemplate {
 }
 
 // MethodNotAllowed ...
-func MethodNotAllowed(data, msg interface{}) *ResponseTemplate {
+func ResponseMethodNotAllowed(data, msg interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusMethodNotAllowed,
 		Status:  http.StatusText(http.StatusMethodNotAllowed),
@@ -236,7 +210,7 @@ func MethodNotAllowed(data, msg interface{}) *ResponseTemplate {
 }
 
 // Ok ...
-func Ok(data, msg interface{}, meta interface{}) *ResponseTemplate {
+func ResponseOk(data, msg interface{}, meta interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusOK,
 		Status:  http.StatusText(http.StatusOK),
@@ -247,7 +221,7 @@ func Ok(data, msg interface{}, meta interface{}) *ResponseTemplate {
 }
 
 // Created ...
-func Created(data, meta interface{}) *ResponseTemplate {
+func ResponseCreated(data, meta interface{}) *ResponseTemplate {
 	return &ResponseTemplate{
 		Code:    http.StatusCreated,
 		Status:  http.StatusText(http.StatusCreated),
