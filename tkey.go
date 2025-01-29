@@ -25,6 +25,9 @@ import (
 	"reflect"
 	"regexp"
 	"strings"
+
+	"github.com/iancoleman/strcase"
+	"github.com/jinzhu/inflection"
 )
 
 var (
@@ -35,11 +38,15 @@ type TKey string
 
 // IsValid checks if the TKey matches the required format.
 func (k TKey) IsValid() bool {
-	return tkeyRegex.MatchString(string(k))
+	return k != "" && tkeyRegex.MatchString(string(k))
 }
 
 // GetTKey generates a unique key for a struct based on its primary key fields and table name.
-func GetTKey(val any) TKey {
+func GetTKey(val any, depth ...int) TKey {
+	if len(depth) == 0 {
+		depth = append(depth, 0)
+	}
+
 	keys := []string{}
 	v := reflect.ValueOf(val)
 
@@ -57,12 +64,26 @@ func GetTKey(val any) TKey {
 		for i := 0; i < v.NumField(); i++ {
 			t := v.Type()
 			f := t.Field(i)
+			fieldValue := v.Field(i)
+
+			// If the field is an embedded struct, process it recursively.
+			if f.Anonymous {
+				embeddedKey := GetTKey(fieldValue.Interface(), depth[0]+1)
+				if embeddedKey != "" {
+					keys = append(keys, string(embeddedKey))
+				}
+				continue
+			}
 
 			// Check for `sim` tag with primaryKey.
-			if ItemExists(strings.Split(strings.ToLower(f.Tag.Get("sim")), ";"), strings.ToLower("primaryKey")) {
-				simKeys = append(simKeys, fmt.Sprintf("%v", v.Field(i)))
-			} else if ItemExists(strings.Split(strings.ToLower(f.Tag.Get("gorm")), ";"), strings.ToLower("primaryKey")) {
-				gormKeys = append(gormKeys, fmt.Sprintf("%v", v.Field(i)))
+			if AnyItemExists(strings.Split(strings.ToLower(f.Tag.Get("sim")), ";"), []string{"primarykey", "primary_key"}) {
+				if val := fmt.Sprintf("%v", v.Field(i)); val != "" {
+					simKeys = append(simKeys, val)
+				}
+			} else if AnyItemExists(strings.Split(strings.ToLower(f.Tag.Get("gorm")), ";"), []string{"primarykey", "primary_key"}) {
+				if val := fmt.Sprintf("%v", v.Field(i)); val != "" {
+					gormKeys = append(gormKeys, val)
+				}
 			}
 		}
 
@@ -72,8 +93,30 @@ func GetTKey(val any) TKey {
 			keys = append(keys, gormKeys...)
 		}
 
-		return TKey(fmt.Sprintf("%s:%s", GetTableName(val), strings.Join(keys, ",")))
+		if depth[0] == 0 {
+			return TKey(fmt.Sprintf("%s:%s", GetModelName(val), strings.Join(keys, ",")))
+		} else {
+			return TKey(strings.Join(keys, ","))
+		}
 	}
 
 	return TKey("")
+}
+
+// GetTableName retrieves the table name for a given struct using GORM v1 conventions.
+func GetModelName(val interface{}) string {
+	v := reflect.TypeOf(val)
+
+	// If it's a pointer, get the underlying type
+	if v.Kind() == reflect.Ptr {
+		v = v.Elem()
+	}
+
+	// Ensure it's a struct
+	if v.Kind() != reflect.Struct {
+		return ""
+	}
+
+	// Default behavior: Convert struct name to snake_case and pluralize
+	return inflection.Plural(strcase.ToSnake(v.Name()))
 }
