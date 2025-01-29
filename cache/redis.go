@@ -37,6 +37,10 @@ var (
 	client *redis.Client // Redis client instance
 )
 
+func IsConnect(ctx context.Context) bool {
+	return client != nil // && client.Ping(ctx).Err() == nil
+}
+
 // Connect initializes the Redis client using the given connection string.
 func Connect(str string) (*redis.Client, error) {
 	if opt, err := redis.ParseURL(str); err != nil {
