@@ -362,6 +362,8 @@ func readConfig(path string) error {
 		return err
 	}
 
+	viper.AutomaticEnv()
+
 	return nil
 }
 
