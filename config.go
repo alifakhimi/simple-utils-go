@@ -40,8 +40,10 @@ type (
 		Description string `json:"description,omitempty"`
 		// Website
 		Website string `json:"website,omitempty"`
-		// Logger
-		Logger Logger `json:"logger,omitempty"`
+		// Author
+		Author string `json:"author,omitempty"`
+		// Homepage
+		Homepage string `json:"homepage,omitempty"`
 		// Address optionally specifies the TCP address for the server to listen on,
 		HttpServers HttpServers `json:"http_servers,omitempty"`
 		// Clients is a list of rest client
@@ -50,6 +52,8 @@ type (
 		Databases DBs `json:"databases,omitempty"`
 		// Meta
 		Meta any `json:"meta,omitempty"`
+		// Logger
+		Logger Logger `json:"logger,omitempty"`
 		// Banner will be displayed when the service starts
 		Banners []*Banner `json:"banners,omitempty"`
 		// viper is a config tools
